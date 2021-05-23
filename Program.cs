@@ -67,7 +67,7 @@ namespace TextFileEncrypter
             var password = GetPassword("a");
             var iterationCount = GetNumber("iteration count");
             var memorySize = GetNumber("memory size in megabytes");
-            var salt = GetSalt();
+            var salt = GetRandomBytes(32);
             var encryptionKey = GetEncryptionKey(salt, iterationCount, memorySize, password);
             Encrypt(filePath, fileContents, encryptionKey, salt, iterationCount, memorySize);
             Console.WriteLine($"Successfully encrypted the contents of the file.");
@@ -109,13 +109,13 @@ namespace TextFileEncrypter
             }
         }
 
-        static byte[] GetSalt()
+        static byte[] GetRandomBytes(int count)
         {
-            var salt = new byte[32];
+            var bytes = new byte[count];
             using var random = new RNGCryptoServiceProvider();
-            random.GetBytes(salt);
+            random.GetBytes(bytes);
 
-            return salt;
+            return bytes;
         }
 
         static byte[] GetEncryptionKey(byte[] salt, int iterationCount, int memorySize, string password)
@@ -144,9 +144,7 @@ namespace TextFileEncrypter
             int memorySize)
         {
             using var aes = new AesGcm(encryptionKey);
-            var nonce = new byte[AesGcm.NonceByteSizes.MaxSize];
-            using var random = new RNGCryptoServiceProvider();
-            random.GetBytes(nonce);
+            var nonce = GetRandomBytes(AesGcm.NonceByteSizes.MaxSize);
             var plaintext = Encoding.UTF8.GetBytes(fileContents);
             var ciphertext = new byte[plaintext.Length];
             var tag = new byte[AesGcm.TagByteSizes.MaxSize];
