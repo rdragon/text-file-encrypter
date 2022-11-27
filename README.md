@@ -2,7 +2,7 @@
 Encrypt or decrypt a single text file using AES-256-GCM with a key that is stretched using [Argon2](https://en.wikipedia.org/wiki/Argon2).
 
 # Quick start
-- Install [.NET 5.0 SDK](https://dotnet.microsoft.com/download/dotnet/5.0)
+- Install [.NET 7.0 SDK](https://dotnet.microsoft.com/download/dotnet/7.0)
 - Encrypt `README.md`: Run `dotnet run -- README.md`. You will be asked to provide a password, an iteration count and a memory size. This will encrypt the contents of `README.md` (the file is modified).
 - Decrypt `README.md`: Run `dotnet run -- README.md`. You will be asked to provide a password. If the password is correct, then the original contents of the file are written to stdout.
 
